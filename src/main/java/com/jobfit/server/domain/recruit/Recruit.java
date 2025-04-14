@@ -19,86 +19,35 @@ import lombok.NoArgsConstructor;
 public class Recruit extends BaseEntity {
 
   @Id
+  @Column(name = "recruit_id")
   @GeneratedValue(strategy = IDENTITY)
   private Long id;
-
   private Long jcId;
-
-  @Column(name = "category")
   private String category;
-
-  @Column(name = "company_name")
   private String companyName;
-
-  @Column(name = "summary")
   private String summary;
-
-  @Column(name = "recruit_number")
   private String recruitNumber;
-
-  @Column(name = "education_type")
   private String educationType;
-
-  @Column(name = "job_type")
   private String jobType;
-
-  @Column(name = "work_place")
   private String workPlace;
-
-  @Column(name = "content")
   private String content;
-
-  @Column(name = "career_type")
   private String careerType;
-
-  @Column(name = "wage")
   private String wage;
-
-  @Column(name = "work_time")
   private String workTime;
-
-  @Column(name = "work_type")
   private String workType;
-
-  @Column(name = "work_schedule")
   private String workSchedule;
-
-  @Column(name = "total_time")
   private String totalTime;
-
-  @Column(name = "insurance")
   private String insurance;
-
-  @Column(name = "recruitment_method")
   private String recruitmentMethod;
-
   private String applyMethod;
-
-  @Column(name = "apply_document")
   private String applyDocument;
-
-  @Column(name = "manager")
   private String manager;
-
-  @Column(name = "manager_phonenumber")
   private String managerPhonenumber;
-
-  @Column(name = "manager_organization")
   private String managerOrganization;
-
-  @Column(name = "company_address")
   private String companyAddress;
-
-  @Column(name = "title")
   private String title;
-
-  @Column(name = "job_posting")
   private String jobPosting;  
-
-  @Column(name = "register_date")
   private LocalDate registerDate;
-
-  @Column(name = "end_date")
   private LocalDate endDate;
 
   public Recruit(

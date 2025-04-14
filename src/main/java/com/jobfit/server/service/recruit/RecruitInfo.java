@@ -7,13 +7,13 @@ import com.jobfit.server.domain.recruit.Recruit;
 import lombok.Builder;
 
 public class RecruitInfo {
-    private Long recruitId;
+  private Long recruitId;
 	private String title;  // 공고 이름
-    private String companyName;  // 회사 이름
-    private String workType;  // 근무 형태
-    private String workPlace;  // 근무예정지
-    private LocalDate registerDate;  // 등록일
-    private LocalDate endDate;  // 마감일
+	private String companyName;  // 회사 이름
+	private String workType;  // 근무 형태
+	private String workPlace;  // 근무예정지
+	private LocalDate registerDate;  // 등록일
+	private LocalDate endDate;  // 마감일
 
 
 	@Builder
