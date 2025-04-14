@@ -1,5 +1,6 @@
 package com.jobfit.server.interfaces.api.user;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,7 +18,7 @@ public class UserController {
 	private final UserService userService;
 
 	@PostMapping("/api/v1/signup")
-	public ApiResponse<UserInfo> signup(@RequestBody UserSignupRequest request) {
+	public ResponseEntity<ApiResponse<UserInfo>> signup(@RequestBody UserSignupRequest request) {
 		return ApiResponse.OK(userService.signUp(request.toCommand()));
 	}
 }

@@ -3,6 +3,7 @@ package com.jobfit.server.interfaces.api;
 import static org.springframework.http.HttpStatus.*;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import lombok.Getter;
 
@@ -23,23 +24,23 @@ public class ApiResponse<T> {
 		this.data = data;
 	}
 
-	public static <T> ApiResponse<T> OK(T data) {
-		return new ApiResponse<>(OK, OK.value(), DEFAULT_MESSAGE, data);
+	public static <T> ResponseEntity<ApiResponse<T>> OK(T data) {
+		return ResponseEntity.status(OK).body(new ApiResponse<>(OK, OK.value(), DEFAULT_MESSAGE, data));
 	}
 
-	public static <T> ApiResponse<T> OK(String message, T data) {
-		return new ApiResponse<>(OK, OK.value(), message, data);
+	public static <T> ResponseEntity<ApiResponse<T>> OK(String message, T data) {
+		return ResponseEntity.status(OK).body(new ApiResponse<>(OK, OK.value(), message, data));
 	}
 
-	public static <T> ApiResponse<T> CREATE(T data) {
-		return new ApiResponse<>(CREATED, CREATED.value(),  DEFAULT_MESSAGE, data);
+	public static <T> ResponseEntity<ApiResponse<T>> CREATE(T data) {
+		return ResponseEntity.status(CREATED).body(new ApiResponse<>(CREATED, CREATED.value(),  DEFAULT_MESSAGE, data));
 	}
 
-	public static <T> ApiResponse<T> CREATE(String message, T data) {
-		return new ApiResponse<>(CREATED, CREATED.value(), message, data);
+	public static <T> ResponseEntity<ApiResponse<T>> CREATE(String message, T data) {
+		return ResponseEntity.status(CREATED).body(new ApiResponse<>(CREATED, CREATED.value(),  message, data));
 	}
 
-	public static <T> ApiResponse<T> BusinessException(HttpStatus httpStatus, String message) {
-		return new ApiResponse<>(httpStatus, httpStatus.value(), message, null);
+	public static <T> ResponseEntity<ApiResponse<T>> BusinessException(HttpStatus httpStatus, String message) {
+		return ResponseEntity.status(httpStatus).body(new ApiResponse<>(httpStatus, httpStatus.value(), message, null));
 	}
 }
