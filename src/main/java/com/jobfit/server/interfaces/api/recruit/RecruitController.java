@@ -2,12 +2,15 @@ package com.jobfit.server.interfaces.api.recruit;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jobfit.server.interfaces.api.ApiResponse;
 import com.jobfit.server.service.recruit.RecruitInfo;
+import com.jobfit.server.service.recruit.RecruitDetailInfo;
 import com.jobfit.server.service.recruit.RecruitService;
 
 import lombok.RequiredArgsConstructor;
@@ -25,5 +28,15 @@ public class RecruitController {
 	@GetMapping("/api/v1/recruit/end")
 	public ResponseEntity<ApiResponse<List<RecruitInfo>>> getEndRecruits() {
 		return ApiResponse.OK(recruitService.getEndRecruits());
+	}
+
+	@GetMapping("/api/v1/recruit/{recruitId}")
+	public ResponseEntity<ApiResponse<RecruitDetailInfo>> getRecruit(@PathVariable Long recruitId) {
+		try {
+			RecruitInfo recruitInfo = recruitService.getRecruit(recruitId);
+			return ApiResponse.OK(recruitInfo);
+		} catch (Exception e) {
+			return ApiResponse.BusinessException(HttpStatus.NOT_FOUND, e.getMessage());
+		}
 	}
 }

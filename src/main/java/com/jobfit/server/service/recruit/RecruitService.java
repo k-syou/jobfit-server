@@ -33,4 +33,9 @@ public class RecruitService {
 			.map(RecruitInfo::from)
 			.collect(Collectors.toList());
 	}
+
+	@Transactional
+	public RecruitDetailInfo getRecruit(Long recruitId) {
+		return RecruitDetailInfo.from(recruitRepository.findById(recruitId).orElseThrow(() -> new RuntimeException("Recruit not found")));
+	}
 }
