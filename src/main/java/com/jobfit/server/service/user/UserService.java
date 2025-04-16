@@ -16,7 +16,7 @@ public class UserService {
 
 	@Transactional
 	public UserInfo signUp(UserSignUpCommand command) {
-		User user = new User(command.getUsername(), command.getPassword());
+		User user = new User(command.getEmail(), command.getUsername(), command.getPassword(),command.getNickname(),command.getStatus() );
 		userRepository.save(user);
 		return UserInfo.from(user);
 	}

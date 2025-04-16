@@ -8,22 +8,26 @@ import lombok.Builder;
 
 public class UserInfo {
 
-	private Long userId;
-	private String username;
-	private LocalDateTime createAt;
+    private Long userId;
+    private String username;
+    private String nickname;
+    private LocalDateTime createAt;
 
-	@Builder
-	private UserInfo(Long userId, String username, LocalDateTime createAt) {
-		this.userId = userId;
-		this.username = username;
-		this.createAt = createAt;
-	}
+    @Builder
+    private UserInfo(Long userId, String username, String nickname, LocalDateTime createAt) {
+        this.userId = userId;
+        this.username = username;
+        this.nickname = nickname;
+        this.createAt = createAt;
 
-	public static UserInfo from(User user) {
-		return UserInfo.builder()
-			.userId(user.getId())
-			.username(user.getUsername())
-			.createAt(user.getCreatedAt())
-			.build();
-	}
+    }
+
+    public static UserInfo from(User user) {
+        return UserInfo.builder()
+                .userId(user.getId())
+                .username(user.getUsername())
+                .nickname(user.getNickname())
+                .createAt(user.getCreatedAt())
+                .build();
+    }
 }

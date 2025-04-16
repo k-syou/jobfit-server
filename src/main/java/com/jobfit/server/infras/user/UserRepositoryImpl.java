@@ -7,6 +7,8 @@ import com.jobfit.server.domain.user.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
+import java.util.Optional;
+
 @Repository
 @RequiredArgsConstructor
 public class UserRepositoryImpl implements UserRepository {
@@ -17,4 +19,14 @@ public class UserRepositoryImpl implements UserRepository {
 	public User save(User user) {
 		return userJpaRepository.save(user);
 	}
+	@Override
+	public Optional<User> findByEmail(String email) {
+		return userJpaRepository.findByEmail(email);
+	}
+
+	@Override
+	public boolean existsByEmail(String email) {
+		return userJpaRepository.existsByEmail(email);
+	}
+
 }

@@ -5,9 +5,7 @@ import static lombok.AccessLevel.*;
 
 import com.jobfit.server.domain.BaseEntity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -20,11 +18,18 @@ public class User extends BaseEntity {
 	@GeneratedValue(strategy = IDENTITY)
 	private Long id;
 
-	private String username;
+	private String email;
 	private String password;
+	private String username;
+	private String nickname;
+	@Enumerated(EnumType.STRING)
+	UserStatus status=UserStatus.ACTIVE;
 
-	public User(String username, String password) {
+	public User(String email,String username, String password,String nickname,UserStatus status) {
+		this.email=email;
 		this.username = username;
 		this.password = password;
+		this.nickname = nickname;
+		this.status=status != null? status : UserStatus.ACTIVE;
 	}
 }
