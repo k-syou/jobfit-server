@@ -9,6 +9,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
@@ -31,5 +33,6 @@ public class User extends BaseEntity {
 		this.password = password;
 		this.nickname = nickname;
 		this.status=status != null? status : UserStatus.ACTIVE;
+		this.createdAt = LocalDateTime.now();
 	}
 }

@@ -5,7 +5,9 @@ import java.time.LocalDateTime;
 import com.jobfit.server.domain.user.User;
 
 import lombok.Builder;
+import lombok.Getter;
 
+@Getter
 public class UserInfo {
 
     private Long userId;
