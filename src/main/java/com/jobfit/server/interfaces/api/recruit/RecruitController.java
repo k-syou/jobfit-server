@@ -32,11 +32,6 @@ public class RecruitController {
 
 	@GetMapping("/api/v1/recruit/{recruitId}")
 	public ResponseEntity<ApiResponse<RecruitDetailInfo>> getRecruit(@PathVariable Long recruitId) {
-		try {
-			RecruitInfo recruitInfo = recruitService.getRecruit(recruitId);
-			return ApiResponse.OK(recruitInfo);
-		} catch (Exception e) {
-			return ApiResponse.BusinessException(HttpStatus.NOT_FOUND, e.getMessage());
-		}
+		return ApiResponse.OK(recruitService.getRecruit(recruitId));
 	}
 }

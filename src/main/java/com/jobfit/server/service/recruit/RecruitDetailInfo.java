@@ -5,7 +5,9 @@ import java.time.LocalDate;
 import com.jobfit.server.domain.recruit.Recruit;
 
 import lombok.Builder;
+import lombok.Getter;
 
+@Getter
 public class RecruitDetailInfo {
   private Long recruitId;
   private Long jcId;
@@ -32,12 +34,12 @@ public class RecruitDetailInfo {
   private String managerOrganization;
   private String companyAddress;
   private String title;
-  private String jobPosting;  
+  private String jobPosting;
   private LocalDate registerDate;
   private LocalDate endDate;
-  
+
   @Builder
-  public RecruitDetailInfo(
+  private RecruitDetailInfo(
     Long recruitId,
     Long jcId,
     String category,
@@ -97,4 +99,34 @@ public class RecruitDetailInfo {
     this.endDate = endDate;
   }
 
+  public static RecruitDetailInfo from(Recruit recruit) {
+    return RecruitDetailInfo.builder()
+        .recruitId(recruit.getId())
+        .jcId(recruit.getJcId())
+        .category(recruit.getCategory())
+        .summary(recruit.getSummary())
+        .recruitNumber(recruit.getRecruitNumber())
+        .educationType(recruit.getEducationType())
+        .jobType(recruit.getJobType())
+        .workPlace(recruit.getWorkPlace())
+        .content(recruit.getContent())
+        .careerType(recruit.getCareerType())
+        .wage(recruit.getWage())
+        .workTime(recruit.getWorkTime())
+        .workType(recruit.getWorkType())
+        .workSchedule(recruit.getWorkSchedule())
+        .totalTime(recruit.getTotalTime())
+        .insurance(recruit.getInsurance())
+        .recruitmentMethod(recruit.getRecruitmentMethod())
+        .applyMethod(recruit.getApplyMethod())
+        .applyDocument(recruit.getApplyDocument())
+        .manager(recruit.getManager())
+        .managerPhonenumber(recruit.getManagerPhonenumber())
+        .companyAddress(recruit.getCompanyAddress())
+        .title(recruit.getTitle())
+        .jobPosting(recruit.getJobPosting())
+        .registerDate(recruit.getRegisterDate())
+        .endDate(recruit.getEndDate())
+        .build();
+  }
 }
