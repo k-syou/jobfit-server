@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.jobfit.server.domain.recruit.Recruit;
 import com.jobfit.server.domain.recruit.RecruitRepository;
+import com.jobfit.server.support.exception.BusinessError;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +37,7 @@ public class RecruitService {
 
 	@Transactional
 	public RecruitDetailInfo getRecruit(Long recruitId) {
-		return RecruitDetailInfo.from(recruitRepository.findById(recruitId).orElseThrow(() -> new RuntimeException("Recruit not found")));
+		return RecruitDetailInfo.from(recruitRepository.findById(recruitId).orElseThrow(
+			BusinessError.NOT_FOUND_RECRUIT_ERROR::exception));
 	}
 }

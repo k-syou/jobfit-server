@@ -1,6 +1,7 @@
 package com.jobfit.server.infras.recruit;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
@@ -18,6 +19,11 @@ public class RecruitRepositoryImpl implements RecruitRepository {
   @Override
   public Recruit save(Recruit recruit) {
     return recruitJpaRepository.save(recruit);
+  }
+
+  @Override
+  public Optional<Recruit> findById(Long id) {
+    return recruitJpaRepository.findById(id);
   }
 
   @Override
