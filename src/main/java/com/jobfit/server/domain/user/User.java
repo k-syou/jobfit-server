@@ -35,4 +35,7 @@ public class User extends BaseEntity {
 		this.status=status != null? status : UserStatus.ACTIVE;
 		this.createdAt = LocalDateTime.now();
 	}
+	public void withDraw(){
+		this.status=UserStatus.WITHDRAW;
+	}
 }

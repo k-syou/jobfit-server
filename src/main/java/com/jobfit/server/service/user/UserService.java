@@ -22,5 +22,16 @@ public class UserService {
 		userRepository.save(user);
 		return UserInfo.from(user);
 	}
+	@Transactional
+	public boolean isEmailDuplicated(UserCheckDuplicatedEmailCommand command) {
+		return userRepository.existsByEmail(command.getEmail());
+	}
 
+	@Transactional
+	public void withDrawUser(UserWithDrawCommand command){
+		User user= userRepository.findByEmail(command.getEmail())
+				.orElseThrow(() -> new IllegalArgumentException("해당 이메일의 사용자가 존재하지 않습니다"));
+
+		user.withDraw();
+	}
 }
