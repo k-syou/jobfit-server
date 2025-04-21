@@ -68,7 +68,7 @@ public class SecurityConfig {
     ) {
         JwtUsernamePasswordAuthenticationFilter filter =
                 new JwtUsernamePasswordAuthenticationFilter(authenticationManager, loginSuccessHandler, loginFailureHandler);
-        filter.setFilterProcessesUrl("/api/v1/login");
+        filter.setFilterProcessesUrl("/api/v1/user/login");
         return filter;
     }
 
@@ -89,7 +89,8 @@ public class SecurityConfig {
                 // .antMatchers(HttpMethod.GET, "/api/v1/**").authenticated() 로그인한 사용자만 허가
                 // 추가안해주시면 작동안합니다 꼭추가해주세요
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/login", "/api/v1/signup", "/css/**").permitAll()
+                        .requestMatchers("/api/v1/user/login", "/api/v1/user/signup", "/api/v1/user/checkemail","api/v1/user/withdraw","/css/**").permitAll()
+                        .requestMatchers("/api/v1/user/withdraw").authenticated()
                         .anyRequest().authenticated()
                 );
 

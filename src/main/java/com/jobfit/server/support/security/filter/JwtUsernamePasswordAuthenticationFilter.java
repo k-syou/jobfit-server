@@ -27,7 +27,7 @@ public class JwtUsernamePasswordAuthenticationFilter extends UsernamePasswordAut
         super(authenticationManager);
 
         // 로그인 URL 지정
-        setFilterProcessesUrl("/api/v1/login");
+        setFilterProcessesUrl("/api/v1/user/login");
 
         // 로그인 성공/실패 핸들러 등록
         setAuthenticationSuccessHandler(loginSuccessHandler);
