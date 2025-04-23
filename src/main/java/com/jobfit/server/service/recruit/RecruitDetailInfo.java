@@ -2,6 +2,7 @@ package com.jobfit.server.service.recruit;
 
 import java.time.LocalDate;
 
+// import com.jobfit.server.domain.recruit.Category;
 import com.jobfit.server.domain.recruit.Recruit;
 
 import lombok.Builder;
@@ -10,7 +11,6 @@ import lombok.Getter;
 @Getter
 public class RecruitDetailInfo {
   private Long recruitId;
-  private Long jcId;
   private String category;
   private String companyName;
   private String summary;
@@ -39,38 +39,35 @@ public class RecruitDetailInfo {
   private LocalDate endDate;
 
   @Builder
-  private RecruitDetailInfo(
-    Long recruitId,
-    Long jcId,
-    String category,
-    String companyName,
-    String summary,
-    String recruitNumber,
-    String educationType,
-    String jobType,
-    String workPlace,
-    String content,
-    String careerType,
-    String wage,
-    String workTime,
-    String workType,
-    String workSchedule,
-    String totalTime,
-    String insurance,
-    String recruitmentMethod,
-    String applyMethod,
-    String applyDocument,
-    String manager,
-    String managerPhonenumber,
-    String managerOrganization,
-    String companyAddress,
-    String title,
-    String jobPosting,
-    LocalDate registerDate,
-    LocalDate endDate
-  ) {
+  public RecruitDetailInfo(
+      Long recruitId,
+      String category,
+      String companyName,
+      String summary,
+      String recruitNumber,
+      String educationType,
+      String jobType,
+      String workPlace,
+      String content,
+      String careerType,
+      String wage,
+      String workTime,
+      String workType,
+      String workSchedule,
+      String totalTime,
+      String insurance,
+      String recruitmentMethod,
+      String applyMethod,
+      String applyDocument,
+      String manager,
+      String managerPhonenumber,
+      String managerOrganization,
+      String companyAddress,
+      String title,
+      String jobPosting,
+      LocalDate registerDate,
+      LocalDate endDate) {
     this.recruitId = recruitId;
-    this.jcId = jcId;
     this.category = category;
     this.companyName = companyName;
     this.summary = summary;
@@ -102,8 +99,8 @@ public class RecruitDetailInfo {
   public static RecruitDetailInfo from(Recruit recruit) {
     return RecruitDetailInfo.builder()
         .recruitId(recruit.getId())
-        .jcId(recruit.getJcId())
         .category(recruit.getCategory())
+        .companyName(recruit.getCompanyName())
         .summary(recruit.getSummary())
         .recruitNumber(recruit.getRecruitNumber())
         .educationType(recruit.getEducationType())
@@ -122,6 +119,7 @@ public class RecruitDetailInfo {
         .applyDocument(recruit.getApplyDocument())
         .manager(recruit.getManager())
         .managerPhonenumber(recruit.getManagerPhonenumber())
+        .managerOrganization(recruit.getManagerOrganization())
         .companyAddress(recruit.getCompanyAddress())
         .title(recruit.getTitle())
         .jobPosting(recruit.getJobPosting())
