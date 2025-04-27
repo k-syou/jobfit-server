@@ -22,6 +22,10 @@ public class CustomUserDetails implements UserDetails {
         return List.of(() -> "ROLE_USER"); // 권한 한 개만 간단히 처리
     }
 
+    public Long getUserId() {
+        return user.getId();
+    }
+
     @Override public String getPassword() { return user.getPassword(); }
     @Override public String getUsername() { return user.getEmail(); } // 로그인 ID
 

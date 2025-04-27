@@ -25,17 +25,28 @@ public class User extends BaseEntity {
 	private String username;
 	private String nickname;
 	@Enumerated(EnumType.STRING)
-	UserStatus status=UserStatus.ACTIVE;
+	UserStatus status = UserStatus.ACTIVE;
 
 	public User(String email,String username, String password,String nickname,UserStatus status) {
-		this.email=email;
+		this.email = email;
 		this.username = username;
 		this.password = password;
 		this.nickname = nickname;
 		this.status=status != null? status : UserStatus.ACTIVE;
 		this.createdAt = LocalDateTime.now();
 	}
+
+	public User(Long id, String email,String username, String password,String nickname,UserStatus status) {
+		this.id = id;
+		this.email = email;
+		this.username = username;
+		this.password = password;
+		this.nickname = nickname;
+		this.status = status != null? status : UserStatus.ACTIVE;
+		this.createdAt = LocalDateTime.now();
+	}
+
 	public void withDraw(){
-		this.status=UserStatus.WITHDRAW;
+		this.status = UserStatus.WITHDRAW;
 	}
 }

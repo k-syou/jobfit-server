@@ -1,16 +1,20 @@
 package com.jobfit.server.support.security;
 
-import com.jobfit.server.support.security.filter.AuthenticationErrorFilter;
-import com.jobfit.server.support.security.filter.JwtAuthenticationFilter;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jobfit.server.support.security.filter.JWTFilter;
 import com.jobfit.server.support.security.filter.JwtUsernamePasswordAuthenticationFilter;
-import com.jobfit.server.support.security.handler.LoginFailureHandler;
-import com.jobfit.server.support.security.handler.LoginSuccessHandler;
+import com.jobfit.server.support.security.util.JWTUtil;
+
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -21,20 +25,19 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.filter.CorsFilter;
 
+@Slf4j
 @Configuration
+@EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-    private final AuthenticationErrorFilter authenticationErrorFilter;
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    private final LoginSuccessHandler loginSuccessHandler;
-    private final LoginFailureHandler loginFailureHandler;
+    private final JWTUtil jwtUtil;
+    private final ObjectMapper objectMapper;
+    private final AuthenticationConfiguration authenticationConfiguration;
 
-    //패스워드 인코더 설정
     @Bean
-    BCryptPasswordEncoder passwordEncoder() {
+    public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-
     }
 
 
@@ -62,39 +65,45 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
-    @Bean
-    public JwtUsernamePasswordAuthenticationFilter jwtUsernamePasswordAuthenticationFilter(
-            AuthenticationManager authenticationManager
-    ) {
-        JwtUsernamePasswordAuthenticationFilter filter =
-                new JwtUsernamePasswordAuthenticationFilter(authenticationManager, loginSuccessHandler, loginFailureHandler);
-        filter.setFilterProcessesUrl("/api/v1/user/login");
-        return filter;
-    }
 
     @Bean
-    SecurityFilterChain filterChain(HttpSecurity http, JwtUsernamePasswordAuthenticationFilter jwtUsernamePasswordAuthenticationFilter) throws Exception {
-        //한글 필터 설정
+    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .addFilterBefore(encodingFilter(), CsrfFilter.class)
-                .addFilterBefore(authenticationErrorFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(jwtUsernamePasswordAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-        http
-                .csrf(csrf -> csrf.disable())
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .csrf(AbstractHttpConfigurer::disable);
 
-                //이쪽에서 URL 설정해야됩니다
-                // Permitall 모든 사용자허가
-                // .antMatchers(HttpMethod.GET, "/api/v1/**").authenticated() 로그인한 사용자만 허가
-                // 추가안해주시면 작동안합니다 꼭추가해주세요
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/user/login", "/api/v1/user/signup", "/api/v1/user/checkemail","api/v1/user/withdraw","/css/**").permitAll()
-                        .requestMatchers("/api/v1/user/withdraw").authenticated()
-                        .anyRequest().authenticated()
-                );
+        http
+            .formLogin(AbstractHttpConfigurer::disable);
+
+        http
+            .httpBasic(AbstractHttpConfigurer::disable);
+
+        // 인증 없이 접근을 허용할 API endpoint를 requestMatchers 안에 설정하세요 ex) 로그인과 상관없이 보이는 조회 API 등
+        http
+            .authorizeHttpRequests((auth) -> auth
+                .requestMatchers(
+                    "/api/v1/user/login",
+                    "/api/v1/user/signup",
+                    "/api/v1/user/checkemail",
+                    "/css/**").permitAll()
+                .anyRequest().authenticated()
+            );
+
+        http
+            .exceptionHandling(
+                exception -> exception.authenticationEntryPoint(new JWTAuthenticationEntryPoint(objectMapper)));
+
+        http
+            .addFilterBefore(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+
+        http
+            .addFilterBefore(encodingFilter(), CsrfFilter.class)
+            .addFilterBefore(corsFilter(), UsernamePasswordAuthenticationFilter.class)
+            .addFilterAt(new JwtUsernamePasswordAuthenticationFilter(jwtUtil, objectMapper, authenticationManager(authenticationConfiguration)), UsernamePasswordAuthenticationFilter.class);
+
+        http.sessionManagement((session) -> session
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        );
 
         return http.build();
     }
-
 }
