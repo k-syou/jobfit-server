@@ -6,10 +6,10 @@ import lombok.Getter;
 @Getter
 
 public class UserWithDrawCommand {
-    private final String email;
+    private final Long userId;
 
-    public UserWithDrawCommand(String email) {
-        this.email = email;
+    public UserWithDrawCommand(Long userId) {
+        this.userId = userId;
     }
 }
 
