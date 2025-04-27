@@ -43,6 +43,9 @@ dependencies {
 	implementation 'io.jsonwebtoken:jjwt-api:0.12.6'
 	implementation 'io.jsonwebtoken:jjwt-impl:0.12.6'
 	implementation 'io.jsonwebtoken:jjwt-jackson:0.12.6'
+  
+  	// org.json 의존성 추가
+	implementation 'org.json:json:20231013' // 버전은 필요에 따라 조정
 }
 
 tasks.named('test') {

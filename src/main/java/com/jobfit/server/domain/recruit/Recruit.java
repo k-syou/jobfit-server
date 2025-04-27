@@ -9,6 +9,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import static lombok.AccessLevel.PROTECTED;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,7 +23,6 @@ public class Recruit extends BaseEntity {
   @Column(name = "recruit_id")
   @GeneratedValue(strategy = IDENTITY)
   private Long id;
-  private Long jcId;
   private String category;
   private String companyName;
   private String summary;
@@ -30,6 +30,8 @@ public class Recruit extends BaseEntity {
   private String educationType;
   private String jobType;
   private String workPlace;
+
+  @Lob
   private String content;
   private String careerType;
   private String wage;
@@ -46,40 +48,37 @@ public class Recruit extends BaseEntity {
   private String managerOrganization;
   private String companyAddress;
   private String title;
-  private String jobPosting;  
+  private String jobPosting;
   private LocalDate registerDate;
   private LocalDate endDate;
 
   public Recruit(
-    Long jcId,
-    String category,
-    String companyName,
-    String summary,
-    String recruitNumber,
-    String educationType,
-    String jobType,
-    String workPlace,
-    String content,
-    String careerType,
-    String wage,
-    String workTime,
-    String workType,
-    String workSchedule,
-    String totalTime,
-    String insurance,
-    String recruitmentMethod,
-    String applyMethod,
-    String applyDocument,
-    String manager,
-    String managerPhonenumber,
-    String managerOrganization,
-    String companyAddress,
-    String title,
-    String jobPosting,
-    LocalDate registerDate,
-    LocalDate endDate
-  ) {
-    this.jcId = jcId;
+      String category,
+      String companyName,
+      String summary,
+      String recruitNumber,
+      String educationType,
+      String jobType,
+      String workPlace,
+      String content,
+      String careerType,
+      String wage,
+      String workTime,
+      String workType,
+      String workSchedule,
+      String totalTime,
+      String insurance,
+      String recruitmentMethod,
+      String applyMethod,
+      String applyDocument,
+      String manager,
+      String managerPhonenumber,
+      String managerOrganization,
+      String companyAddress,
+      String title,
+      String jobPosting,
+      LocalDate registerDate,
+      LocalDate endDate) {
     this.category = category;
     this.companyName = companyName;
     this.summary = summary;
