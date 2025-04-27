@@ -7,18 +7,21 @@ import lombok.Getter;
 
 @Getter
 public class UserSignupRequest {
+
 	private String email;
 	private String username;
 	private String password;
 	private String confirmPassword;
 	private String nickname;
+	private String otp;
 
-	public UserSignupRequest(String email, String username, String password, String confirmPassword, String nickname) {
+	public UserSignupRequest(String email, String username, String password, String confirmPassword, String nickname, String otp) {
 		this.email = email;
 		this.username = username;
 		this.password = password;
 		this.confirmPassword = confirmPassword;
 		this.nickname = nickname;
+		this.otp = otp;
 	}
 
 	public UserSignUpCommand toCommand() {
@@ -47,6 +50,10 @@ public class UserSignupRequest {
 			throw USER_SIGNUP_NICKNAME_NULL_OR_EMPTY.exception();
 		}
 
-		return new UserSignUpCommand(email,username, password,nickname);
+		if (otp == null || otp.isEmpty()) {
+			throw USER_SIGNUP_OTP_NULL_OR_EMPTY.exception();
+		}
+
+		return new UserSignUpCommand(email, username, password, nickname, otp);
 	}
 }

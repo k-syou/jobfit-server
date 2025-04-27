@@ -1,3 +1,3 @@
 GET localhost:8080/api/v1/user/profile
 Content-Type:  application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEsImlhdCI6MTc0NTc0NjE5NywiZXhwIjoxNzQ1NzQ5Nzk3fQ.SDP1sCakSJqcGE2FxoogCsSCab3kZnIDEWG4HTTFqAc
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEsImlhdCI6MTc0NTc5NjA5NSwiZXhwIjoxNzQ1Nzk5Njk1fQ.zicM1vYZImsLWTPU4nm7hDnLX6eZBG1OZua18kluz9o
