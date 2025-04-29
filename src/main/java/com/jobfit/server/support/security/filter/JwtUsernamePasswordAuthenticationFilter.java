@@ -44,13 +44,13 @@ public class JwtUsernamePasswordAuthenticationFilter extends UsernamePasswordAut
             // 요청 바디에서 로그인 정보 추출
             UserLoginRequest loginRequest = objectMapper.readValue(request.getInputStream(), UserLoginRequest.class);
 
-            String email = loginRequest.getEmail();
+            String username = loginRequest.getUsername();
             String password = loginRequest.getPassword();
 
-            log.info("로그인 시도: {}", email);
+            log.info("로그인 시도: {}", username);
 
             // 이메일 + 비밀번호로 인증 객체 생성
-            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(email, password);
+            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password);
 
             // AuthenticationManager에게 인증 요청
             return authenticationManager.authenticate(authToken);
@@ -63,12 +63,11 @@ public class JwtUsernamePasswordAuthenticationFilter extends UsernamePasswordAut
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException, ServletException {
-        System.out.println("성공");
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
 
         Long userId = customUserDetails.getUser().getId();
 
-        LoginResponse loginResponse = new LoginResponse(jwtUtil.createJwt(userId, 60*60*1000L));
+        LoginResponse loginResponse = new LoginResponse(jwtUtil.createJwt(userId, 60 * 60 * 1000L));
 
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
@@ -86,7 +85,6 @@ public class JwtUsernamePasswordAuthenticationFilter extends UsernamePasswordAut
 
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
-        System.out.println("실패");
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
 

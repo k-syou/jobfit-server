@@ -13,7 +13,7 @@ import java.net.http.HttpRequest;
 @Getter
 @NoArgsConstructor
 public class UserLoginRequest {
-    public String email;
+    public String username;
     public String password;
 
     public static UserLoginRequest of(HttpServletRequest request) throws AuthenticationException {
@@ -22,7 +22,7 @@ public class UserLoginRequest {
             return om.readValue(request.getInputStream(), UserLoginRequest.class);
         }catch (Exception e) {
             e.printStackTrace();
-            throw new BadCredentialsException("email 또는 password가 없습니다.");
+            throw new BadCredentialsException("username 또는 password가 없습니다.");
         }
     }
 }

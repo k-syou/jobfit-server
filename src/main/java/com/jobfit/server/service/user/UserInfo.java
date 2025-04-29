@@ -12,14 +12,14 @@ public class UserInfo {
 
     private Long userId;
     private String username;
-    private String nickname;
+    private String name;
     private LocalDateTime createAt;
 
     @Builder
-    private UserInfo(Long userId, String username, String nickname, LocalDateTime createAt) {
+    private UserInfo(Long userId, String username, String name, LocalDateTime createAt) {
         this.userId = userId;
         this.username = username;
-        this.nickname = nickname;
+        this.name = name;
         this.createAt = createAt;
 
     }
@@ -28,7 +28,7 @@ public class UserInfo {
         return UserInfo.builder()
                 .userId(user.getId())
                 .username(user.getUsername())
-                .nickname(user.getNickname())
+                .name(user.getName())
                 .createAt(user.getCreatedAt())
                 .build();
     }

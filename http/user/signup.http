@@ -5,7 +5,7 @@ Content-Type: application/json
   "email": "rlagudwog@gmail.com",
   "password": "hp12081208!",
   "confirmPassword": "hp12081208!",
-  "username": "김형재",
-  "nickname": "kimbro97",
-  "otp": "136541"
+  "username": "kimb97",
+  "name": "김형재",
+  "otp": "121516"
 }

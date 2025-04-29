@@ -24,13 +24,16 @@ public class UserService {
 	@Transactional
 	public UserInfo signUp(UserSignUpCommand command) {
 
+		userRepository.findByUsername(command.getUsername())
+			.ifPresent(user -> { throw USER_USERNAME_DUPLICATE_ERROR.exception(); });
+
 		userRepository.findByEmail(command.getEmail())
 			.ifPresent(user -> { throw USER_EMAIL_DUPLICATE_ERROR.exception(); });
 
 		Otp otp = otpRepository.findByEmailAndOtp(command.getEmail(), command.getOtp())
-			.orElseThrow(EXPIRED_OTP_ERROR::exception);
+			.orElseThrow(NOT_FOUND_OTP_ERROR::exception);
 
-		User user = User.create(command.getEmail(), command.getUsername(), passwordEncoder.encode(command.getPassword()), command.getNickname());
+		User user = User.create(command.getEmail(), command.getUsername(), passwordEncoder.encode(command.getPassword()), command.getName());
 
 		user.signUp(otp);
 
