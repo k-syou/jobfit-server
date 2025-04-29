@@ -12,15 +12,15 @@ public class UserSignupRequest {
 	private String username;
 	private String password;
 	private String confirmPassword;
-	private String nickname;
+	private String name;
 	private String otp;
 
-	public UserSignupRequest(String email, String username, String password, String confirmPassword, String nickname, String otp) {
+	public UserSignupRequest(String email, String username, String password, String confirmPassword, String name, String otp) {
 		this.email = email;
 		this.username = username;
 		this.password = password;
 		this.confirmPassword = confirmPassword;
-		this.nickname = nickname;
+		this.name = name;
 		this.otp = otp;
 	}
 
@@ -46,14 +46,14 @@ public class UserSignupRequest {
 			throw USER_SIGNUP_PASSWORD_NOT_MATCH.exception();
 		}
 
-		if (nickname == null || nickname.isEmpty()) {
-			throw USER_SIGNUP_NICKNAME_NULL_OR_EMPTY.exception();
+		if (name == null || name.isEmpty()) {
+			throw USER_SIGNUP_NAME_NULL_OR_EMPTY.exception();
 		}
 
 		if (otp == null || otp.isEmpty()) {
 			throw USER_SIGNUP_OTP_NULL_OR_EMPTY.exception();
 		}
 
-		return new UserSignUpCommand(email, username, password, nickname, otp);
+		return new UserSignUpCommand(email, username, password, name, otp);
 	}
 }

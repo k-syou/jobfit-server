@@ -27,7 +27,7 @@ public class CustomUserDetails implements UserDetails {
     }
 
     @Override public String getPassword() { return user.getPassword(); }
-    @Override public String getUsername() { return user.getEmail(); } // 로그인 ID
+    @Override public String getUsername() { return user.getUsername(); } // 로그인 ID
 
     @Override public boolean isAccountNonExpired() { return true; }
     @Override public boolean isAccountNonLocked() { return true; }

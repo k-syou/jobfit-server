@@ -25,35 +25,35 @@ public class User extends BaseEntity {
 	private String email;
 	private String password;
 	private String username;
-	private String nickname;
+	private String name;
 	@Enumerated(EnumType.STRING)
 	private UserStatus status;
 
 	@Builder
-	private User(String email, String username, String password, String nickname) {
+	private User(String email, String username, String password, String name) {
 		this.email = email;
 		this.username = username;
 		this.password = password;
-		this.nickname = nickname;
+		this.name = name;
 		this.status = UserStatus.ACTIVE;
 	}
 
-	public User(Long id, String email,String username, String password,String nickname,UserStatus status) {
+	public User(Long id, String email,String username, String password,String name,UserStatus status) {
 		this.id = id;
 		this.email = email;
 		this.username = username;
 		this.password = password;
-		this.nickname = nickname;
+		this.name = name;
 		this.status = status != null? status : UserStatus.ACTIVE;
 		this.createdAt = LocalDateTime.now();
 	}
 
-	public static User create(String email, String username, String password, String nickname) {
+	public static User create(String email, String username, String password, String name) {
 		return User.builder()
 			.email(email)
 			.username(username)
 			.password(password)
-			.nickname(nickname)
+			.name(name)
 			.build();
 	}
 
