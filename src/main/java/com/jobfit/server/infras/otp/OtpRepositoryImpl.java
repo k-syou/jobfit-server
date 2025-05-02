@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import com.jobfit.server.domain.otp.Otp;
 import com.jobfit.server.domain.otp.OtpRepository;
+import com.jobfit.server.domain.otp.OtpType;
 
 import lombok.RequiredArgsConstructor;
 
@@ -38,5 +39,10 @@ public class OtpRepositoryImpl implements OtpRepository {
 	@Override
 	public Optional<Otp> findById(Long id) {
 		return otpJpaRepository.findById(id);
+	}
+
+	@Override
+	public Optional<Otp> findByEmailAndTypeAndOtp(String email, OtpType type, String otp) {
+		return otpJpaRepository.findByEmailAndTypeAndOtp(email, type, otp);
 	}
 }

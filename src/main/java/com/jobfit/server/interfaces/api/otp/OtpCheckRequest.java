@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class OtpCheckRequest {
 
 	private String email;
+	private String type;
 	private String otp;
 
 	public OtpCheckCommand toCommand() {
@@ -24,7 +25,11 @@ public class OtpCheckRequest {
 			throw CHECK_OTP_NULL_OR_EMPTY.exception();
 		}
 
-		return new OtpCheckCommand(email, otp);
+		if (type == null || type.isEmpty()) {
+			throw MAIL_SEND_TYPE_NULL_OR_EMPTY.exception();
+		}
+
+		return new OtpCheckCommand(email, type, otp);
 	}
 
 }
