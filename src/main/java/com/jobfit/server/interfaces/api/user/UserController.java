@@ -1,5 +1,9 @@
 package com.jobfit.server.interfaces.api.user;
 
+import com.jobfit.server.interfaces.api.user.request.FindPasswordRequest;
+import com.jobfit.server.interfaces.api.user.request.FindUsernameRequest;
+import com.jobfit.server.interfaces.api.user.request.UserCheckDuplicatedEmailRequest;
+import com.jobfit.server.interfaces.api.user.request.UserSignupRequest;
 import com.jobfit.server.service.user.UserWithDrawCommand;
 import com.jobfit.server.support.security.CustomUserDetails;
 import org.springframework.http.ResponseEntity;
@@ -44,6 +48,18 @@ public class UserController {
 	@GetMapping("/profile")
 	public ResponseEntity<ApiResponse<UserInfo>> getProfile(@AuthenticationPrincipal CustomUserDetails userDetails) {
 		return ApiResponse.OK(userService.getProfile(userDetails.getUserId()));
+	}
+
+	@PostMapping("/find-username")
+	public ResponseEntity<ApiResponse<Void>> findUsername(@RequestBody FindUsernameRequest request) {
+		userService.findUsername(request.toCommand());
+		return ApiResponse.OK(null);
+	}
+
+	@PostMapping("/find-password")
+	public ResponseEntity<ApiResponse<Void>> findPassword(@RequestBody FindPasswordRequest request) {
+		userService.findPassword(request.toCommand());
+		return ApiResponse.OK(null);
 	}
 
 }

@@ -1,4 +1,4 @@
-package com.jobfit.server.interfaces.api.user;
+package com.jobfit.server.interfaces.api.user.request;
 
 import com.jobfit.server.service.user.UserCheckDuplicatedEmailCommand;
 import com.jobfit.server.support.exception.BusinessError;

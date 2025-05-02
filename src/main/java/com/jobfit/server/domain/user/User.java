@@ -64,4 +64,14 @@ public class User extends BaseEntity {
 	public void withDraw(){
 		this.status = UserStatus.WITHDRAW;
 	}
+
+	public String findUsername(Otp otp) {
+		otp.validateVerified();
+		return this.username;
+	}
+
+	public void changePassword(Otp otp, String password) {
+		otp.validateVerified();
+		this.password = password;
+	}
 }

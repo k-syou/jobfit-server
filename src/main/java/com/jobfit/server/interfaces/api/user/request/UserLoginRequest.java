@@ -1,4 +1,4 @@
-package com.jobfit.server.interfaces.api.user;
+package com.jobfit.server.interfaces.api.user.request;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
@@ -7,12 +7,10 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
 
-import java.io.IOException;
-import java.net.http.HttpRequest;
-
 @Getter
 @NoArgsConstructor
 public class UserLoginRequest {
+
     public String username;
     public String password;
 

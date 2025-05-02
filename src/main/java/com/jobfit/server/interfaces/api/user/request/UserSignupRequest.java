@@ -1,4 +1,4 @@
-package com.jobfit.server.interfaces.api.user;
+package com.jobfit.server.interfaces.api.user.request;
 
 import static com.jobfit.server.support.exception.BusinessError.*;
 
