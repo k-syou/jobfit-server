@@ -2,7 +2,7 @@ package com.jobfit.server.support.security.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jobfit.server.interfaces.api.ApiResponse;
-import com.jobfit.server.interfaces.api.user.UserLoginRequest;
+import com.jobfit.server.interfaces.api.user.request.UserLoginRequest;
 import com.jobfit.server.support.security.CustomUserDetails;
 import com.jobfit.server.support.security.LoginResponse;
 import com.jobfit.server.support.security.util.JWTUtil;
