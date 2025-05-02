@@ -25,11 +25,10 @@ public class UserController {
 	public ResponseEntity<ApiResponse<UserInfo>> signup(@RequestBody UserSignupRequest request) {
 		return ApiResponse.OK(userService.signUp(request.toCommand()));
 	}
-	@PostMapping("/checkemail")
-	public ResponseEntity<ApiResponse<Void>> checkEmail(@RequestBody @Validated UserCheckDuplicatedEmailRequest request)
-	{
-		boolean exists = userService.isEmailDuplicated(request.toCommand());
-		return ApiResponse.OK("중복된 이메일입니다.", null);
+	@PostMapping("/check/username")
+	public ResponseEntity<ApiResponse<Void>> checkEmail(@RequestBody UserCheckDuplicatedEmailRequest request) {
+		userService.isUsernameDuplicated(request.toCommand());
+		return ApiResponse.OK("가입할 수 있는 아이디입니다.", null);
 	}
 	// 유저에 대한 접근은 시큐리티에 커스텀 유저로 접근해야 되기 때문에 request 불필요 ->
 	//@AuthenticationPrincipal 이걸로 인가된 사용자인지 시큐리티 자체적으로 검증해주기 대문에 커스텀 유저로 접근해서

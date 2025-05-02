@@ -83,7 +83,7 @@ public class SecurityConfig {
                 .requestMatchers(
                     "/api/v1/user/login",
                     "/api/v1/user/signup",
-                    "/api/v1/user/checkemail",
+                    "/api/v1/user/check/username",
                     "/api/v1/otp",
                     "/api/v1/otp/check",
                     "/css/**").permitAll()

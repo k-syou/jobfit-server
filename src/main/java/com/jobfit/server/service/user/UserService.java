@@ -42,8 +42,9 @@ public class UserService {
 	}
 
 	@Transactional
-	public boolean isEmailDuplicated(UserCheckDuplicatedEmailCommand command) {
-		return userRepository.existsByEmail(command.getEmail());
+	public void isUsernameDuplicated(UserCheckDuplicatedEmailCommand command) {
+		userRepository.findByUsername(command.getUsername())
+			.ifPresent(user -> { throw USER_USERNAME_DUPLICATE_ERROR.exception(); });
 	}
 
 	@Transactional

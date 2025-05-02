@@ -6,9 +6,9 @@ import lombok.NoArgsConstructor;
 @Getter
 
 public class UserCheckDuplicatedEmailCommand {
-    private String email;
+    private String username;
 
-    public UserCheckDuplicatedEmailCommand(String email){
-        this.email=email;
+    public UserCheckDuplicatedEmailCommand(String username){
+        this.username = username;
     }
 }
