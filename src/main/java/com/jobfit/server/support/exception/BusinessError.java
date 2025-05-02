@@ -26,6 +26,7 @@ public enum BusinessError {
 
 	// 메일 관련 Error
 	MAIL_SEND_EMAIL_NULL_OR_EMPTY(BAD_REQUEST, "이메일을 입력해주세요."),
+	MAIL_SEND_TYPE_NULL_OR_EMPTY(BAD_REQUEST, "타입을 입력해주세요."),
 	CHECK_OTP_NULL_OR_EMPTY(BAD_REQUEST, "otp번호를 입력해주세요."),
 	NOT_FOUND_OTP_ERROR(NOT_FOUND, "인정정보를 찾을 수 없습니다."),
 	EXPIRED_OTP_ERROR(BAD_REQUEST, "인증시간이 만료되었습니다."),

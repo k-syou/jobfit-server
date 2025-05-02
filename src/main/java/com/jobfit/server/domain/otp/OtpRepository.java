@@ -9,4 +9,6 @@ public interface OtpRepository {
 
 	Optional<Otp> findByEmail(String email);
 	Optional<Otp> findById(Long id);
+
+	Optional<Otp> findByEmailAndTypeAndOtp(String email, OtpType type, String otp);
 }

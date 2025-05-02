@@ -10,8 +10,9 @@ import lombok.NoArgsConstructor;
 public class OptCreateRequest {
 
 	private String email;
+	private String type;
 
 	public OtpCreateCommand toCommand() {
-		return new OtpCreateCommand(email);
+		return new OtpCreateCommand(email, type);
 	}
 }

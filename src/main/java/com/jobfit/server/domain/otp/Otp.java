@@ -8,6 +8,8 @@ import com.jobfit.server.domain.BaseEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -28,20 +30,25 @@ public class Otp extends BaseEntity {
 
 	private String email;
 	private String otp;
+
+	@Enumerated(EnumType.STRING)
+	private OtpType type;
 	private Boolean isVerified;
 	private LocalDateTime expiredAt;
 
 	@Builder
-	private Otp(String email, String otp) {
+	private Otp(String email, OtpType type, String otp) {
 		this.email = email;
 		this.otp = otp;
+		this.type = type;
 		this.isVerified = false;
 		this.expiredAt = LocalDateTime.now().plusMinutes(5);
 	}
 
-	public static Otp create(String email, String otp) {
+	public static Otp create(String email, OtpType type, String otp) {
 		return Otp.builder()
 			.email(email)
+			.type(type)
 			.otp(otp)
 			.build();
 	}
