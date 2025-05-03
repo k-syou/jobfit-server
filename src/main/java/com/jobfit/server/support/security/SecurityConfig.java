@@ -81,13 +81,14 @@ public class SecurityConfig {
         http
             .authorizeHttpRequests((auth) -> auth
                 .requestMatchers(
+                    "/api/v1/otp",
+                    "/api/v1/trends",
+                    "/api/v1/otp/check",
                     "/api/v1/user/login",
                     "/api/v1/user/signup",
                     "/api/v1/user/check/username",
                     "/api/v1/user/find-username",
                     "/api/v1/user/find-password",
-                    "/api/v1/otp",
-                    "/api/v1/otp/check",
                     "/css/**").permitAll()
                 .anyRequest().authenticated()
             );
