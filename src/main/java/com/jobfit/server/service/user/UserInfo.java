@@ -13,13 +13,15 @@ public class UserInfo {
     private Long userId;
     private String username;
     private String name;
+    private String email;
     private LocalDateTime createAt;
 
     @Builder
-    private UserInfo(Long userId, String username, String name, LocalDateTime createAt) {
+    private UserInfo(Long userId, String username, String name, String email, LocalDateTime createAt) {
         this.userId = userId;
         this.username = username;
         this.name = name;
+        this.email = email;
         this.createAt = createAt;
 
     }
@@ -29,6 +31,7 @@ public class UserInfo {
                 .userId(user.getId())
                 .username(user.getUsername())
                 .name(user.getName())
+                .email(user.getEmail())
                 .createAt(user.getCreatedAt())
                 .build();
     }
