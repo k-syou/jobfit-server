@@ -74,4 +74,8 @@ public class User extends BaseEntity {
 		otp.validateVerified();
 		this.password = password;
 	}
+
+	public void changePassword(String password) {
+		this.password = password;
+	}
 }

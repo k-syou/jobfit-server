@@ -3,6 +3,7 @@ package com.jobfit.server.interfaces.api.user;
 import com.jobfit.server.interfaces.api.user.request.FindPasswordRequest;
 import com.jobfit.server.interfaces.api.user.request.FindUsernameRequest;
 import com.jobfit.server.interfaces.api.user.request.UserCheckDuplicatedEmailRequest;
+import com.jobfit.server.interfaces.api.user.request.UserEditRequest;
 import com.jobfit.server.interfaces.api.user.request.UserSignupRequest;
 import com.jobfit.server.service.user.UserWithDrawCommand;
 import com.jobfit.server.support.security.CustomUserDetails;
@@ -48,6 +49,11 @@ public class UserController {
 	@GetMapping("/profile")
 	public ResponseEntity<ApiResponse<UserInfo>> getProfile(@AuthenticationPrincipal CustomUserDetails userDetails) {
 		return ApiResponse.OK(userService.getProfile(userDetails.getUserId()));
+	}
+
+	@PatchMapping("/profile")
+	public ResponseEntity<ApiResponse<UserInfo>> getProfile(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody UserEditRequest request) {
+		return ApiResponse.OK(userService.editProfile(request.toCommand(userDetails.getUserId())));
 	}
 
 	@PostMapping("/find-username")

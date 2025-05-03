@@ -23,6 +23,8 @@ public enum BusinessError {
 	USER_NOT_FOUND_ERROR(NOT_FOUND, "회원을 찾을 수 없습니다."),
 	USER_EMAIL_DUPLICATE_ERROR(BAD_REQUEST, "이미 가입된 이메일입니다."),
 	USER_USERNAME_DUPLICATE_ERROR(BAD_REQUEST, "이미 가입된 아이디입니다."),
+	USER_EDIT_NEW_PASSWORD_NULL_OR_EMPTY(BAD_REQUEST, "변경하실 비밀번호를 입력해주세요."),
+	USER_EDIT_CONFIRM_PASSWORD_NULL_OR_EMPTY(BAD_REQUEST, "새로운 비밀번호와 일치하지 않습니다."),
 
 	// 메일 관련 Error
 	MAIL_SEND_EMAIL_NULL_OR_EMPTY(BAD_REQUEST, "이메일을 입력해주세요."),

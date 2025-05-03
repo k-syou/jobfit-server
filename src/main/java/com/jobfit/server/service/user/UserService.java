@@ -108,6 +108,20 @@ public class UserService {
 		eventPublisher.publishEvent(new OtpMailEvent(message));
 	}
 
+	@Transactional
+	public UserInfo editProfile(UserEditCommand command) {
+
+		Long userId = command.getUserId();
+		String newPassword = command.getNewPassword();
+
+		User user = userRepository.findById(userId)
+			.orElseThrow(USER_NOT_FOUND_ERROR::exception);
+
+		user.changePassword(passwordEncoder.encode(newPassword));
+
+		return UserInfo.from(user);
+	}
+
 	private String createNewPassword() {
 		int length = random.nextInt(12 - 8 + 1) + 8;
 
