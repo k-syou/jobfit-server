@@ -34,7 +34,11 @@ public enum BusinessError {
 	EXPIRED_OTP_ERROR(BAD_REQUEST, "인증시간이 만료되었습니다."),
 
 	// 채용공고 관련 Error
-	NOT_FOUND_RECRUIT_ERROR(NOT_FOUND, "해당 채용공고를 찾을 수 없습니다.");
+	NOT_FOUND_RECRUIT_ERROR(NOT_FOUND, "해당 채용공고를 찾을 수 없습니다."),
+
+	// 즐겨찾기 관련 Error
+	ALREADY_FAVORITE_RECRUIT(BAD_REQUEST, "이미 즐겨찾기한 채용공고입니다."),
+	NOT_FOUND_FAVORITE_ERROR(NOT_FOUND, "좋아요 기록이 없습니다.");
 
 
 	private final HttpStatus httpStatus;
