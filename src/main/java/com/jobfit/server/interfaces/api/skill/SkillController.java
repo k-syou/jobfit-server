@@ -1,13 +1,17 @@
 package com.jobfit.server.interfaces.api.skill;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jobfit.server.interfaces.api.ApiResponse;
+import com.jobfit.server.service.skill.CertificationInfo;
 import com.jobfit.server.service.skill.SkillInfo;
 import com.jobfit.server.service.skill.SkillService;
 import com.jobfit.server.support.security.CustomUserDetails;
@@ -31,5 +35,10 @@ public class SkillController {
 		@RequestBody PatchSkillRequest request
 	) {
 		return ApiResponse.OK(skillService.patchSkill(request.toCommand(user.getUserId())));
+	}
+
+	@GetMapping("/api/v1/user/skill/certification")
+	public ResponseEntity<ApiResponse<List<CertificationInfo>>> getCertification(@RequestParam String name) {
+		return ApiResponse.OK(skillService.getCertifications(name));
 	}
 }

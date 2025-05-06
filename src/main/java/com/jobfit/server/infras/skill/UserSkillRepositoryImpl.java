@@ -1,9 +1,11 @@
 package com.jobfit.server.infras.skill;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
+import com.jobfit.server.domain.skill.Certification;
 import com.jobfit.server.domain.skill.UserSkill;
 import com.jobfit.server.domain.skill.UserSkillRepository;
 
@@ -14,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 public class UserSkillRepositoryImpl implements UserSkillRepository {
 
 	private final UserSkillJpaRepository userSkillJpaRepository;
+	private final CertificationJpaRepository CertificationJpaRepository;
 
 	@Override
 	public UserSkill save(UserSkill userSkill) {
@@ -28,5 +31,10 @@ public class UserSkillRepositoryImpl implements UserSkillRepository {
 	@Override
 	public Optional<UserSkill> findByUserId(Long userId) {
 		return userSkillJpaRepository.findByUserId(userId);
+	}
+
+	@Override
+	public List<Certification> findAllByNameLikeOrAll(String name) {
+		return CertificationJpaRepository.findAllByNameLikeOrAll(name);
 	}
 }
