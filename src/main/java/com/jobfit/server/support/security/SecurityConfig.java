@@ -83,6 +83,7 @@ public class SecurityConfig {
                 .requestMatchers(
                     "/api/v1/otp",
                     "/api/v1/trends",
+                    "/api/v1/recruit",
                     "/api/v1/otp/check",
                     "/api/v1/user/login",
                     "/api/v1/user/signup",

@@ -4,6 +4,8 @@ package com.jobfit.server.infras.recruit;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 // import com.jobfit.server.domain.recruit.Category;
@@ -38,5 +40,11 @@ public class RecruitRepositoryImpl implements RecruitRepository {
   @Override
   public Optional<Recruit> findById(Long recruitId) {
     return recruitJpaRepository.findById(recruitId);
+  }
+
+  @Override
+  public Page<RecruitWithFavoriteDto> findRecruitsWithFavoriteStatus(Long userId, String companyName, String region, String job,
+      String careerType, Pageable pageable) {
+    return recruitJpaRepository.findRecruitsWithFavoriteStatus(userId, companyName, region, job, careerType, pageable);
   }
 }

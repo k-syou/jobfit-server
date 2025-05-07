@@ -5,7 +5,9 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,6 +18,7 @@ import com.jobfit.server.interfaces.api.ApiResponse;
 import com.jobfit.server.service.recruit.RecruitDetailInfo;
 import com.jobfit.server.service.recruit.RecruitInfo;
 import com.jobfit.server.service.recruit.RecruitService;
+import com.jobfit.server.support.security.CustomUserDetails;
 
 import lombok.RequiredArgsConstructor;
 
@@ -37,25 +40,9 @@ public class RecruitController {
 	}
 
 	@GetMapping
-	public ResponseEntity<ApiResponse<Page<RecruitInfo>>> searchRecruits(
-			@RequestParam(required = false) Integer page,
-			@RequestParam(required = false, defaultValue = "최신 등록일 순") String sortType,
-			@RequestParam(required = false) Integer size,
-			@RequestParam(required = false) String companyName,
-			@RequestParam(required = false) String region,
-			@RequestParam(required = false) String job,
-			@RequestParam(required = false) String careerType) {
-
-		Page<RecruitInfo> recruitPage = recruitService.searchRecruits(
-				page,
-				sortType,
-				size,
-				companyName,
-				region,
-				job,
-				careerType);
-
-		return ApiResponse.OK(recruitPage);
+	public ResponseEntity<ApiResponse<List<RecruitInfo>>> searchRecruits(@AuthenticationPrincipal CustomUserDetails user, @ModelAttribute SearchRecruitRequest request) {
+		Long userId = (user != null) ? user.getUserId() : null;
+		return ApiResponse.OK(recruitService.searchRecruits(request.toCommand(userId)));
 	}
 
 	@PostMapping("/testDataInput")
