@@ -38,8 +38,11 @@ public enum BusinessError {
 
 	// 즐겨찾기 관련 Error
 	ALREADY_FAVORITE_RECRUIT(BAD_REQUEST, "이미 즐겨찾기한 채용공고입니다."),
-	NOT_FOUND_FAVORITE_ERROR(NOT_FOUND, "좋아요 기록이 없습니다.");
+	NOT_FOUND_FAVORITE_ERROR(NOT_FOUND, "좋아요 기록이 없습니다."),
 
+	// 챌린지 관련 Error
+	ALREADY_CHALLENGE_RECRUIT(BAD_REQUEST, "이미 챌리지한 채용공고입니다."),
+	NOT_FOUND_CHALLENGE_ERROR(NOT_FOUND, "삭제할 데이터가 없습니다.");
 
 	private final HttpStatus httpStatus;
 	private final String message;
