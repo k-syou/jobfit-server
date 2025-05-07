@@ -25,6 +25,7 @@ public class Recruit extends BaseEntity {
   private Long id;
   private String category;
   private String companyName;
+  @Lob
   private String summary;
   private String recruitNumber;
   private String educationType;
