@@ -13,12 +13,13 @@ public class FavoriteRecruitDto {
 	private String wage;
 	private String workPlace;
 	private String jobType;
+	private String careerType;
 	private LocalDate registerDate;
 	private LocalDate endDate;
 
 	public FavoriteRecruitDto(Long userId, Long recruitId, String title, String companyName, String wage,
 		String workPlace,
-		String jobType, LocalDate registerDate, LocalDate endDate) {
+		String jobType, String careerType, LocalDate registerDate, LocalDate endDate) {
 		this.userId = userId;
 		this.recruitId = recruitId;
 		this.title = title;
@@ -26,6 +27,7 @@ public class FavoriteRecruitDto {
 		this.wage = wage;
 		this.workPlace = workPlace;
 		this.jobType = jobType;
+		this.careerType = careerType;
 		this.registerDate = registerDate;
 		this.endDate = endDate;
 	}

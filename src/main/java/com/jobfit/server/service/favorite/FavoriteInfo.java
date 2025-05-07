@@ -17,11 +17,12 @@ public class FavoriteInfo {
 	private String wage;
 	private String workPlace;
 	private String jobType;
+	private String careerType;
 	private LocalDate registerDate;
 	private LocalDate endDate;
 
 	@Builder
-	private FavoriteInfo(Long userId, Long recruitId, String title, String companyName, String wage, String workPlace, String jobType, LocalDate registerDate, LocalDate endDate) {
+	private FavoriteInfo(Long userId, Long recruitId, String title, String companyName, String wage, String workPlace, String jobType, String careerType, LocalDate registerDate, LocalDate endDate) {
 		this.userId = userId;
 		this.recruitId = recruitId;
 		this.title = title;
@@ -29,6 +30,7 @@ public class FavoriteInfo {
 		this.wage = wage;
 		this.workPlace = workPlace;
 		this.jobType = jobType;
+		this.careerType = careerType;
 		this.registerDate = registerDate;
 		this.endDate = endDate;
 	}
@@ -42,6 +44,7 @@ public class FavoriteInfo {
 			.wage(dto.getWage())
 			.workPlace(dto.getWorkPlace())
 			.jobType(dto.getJobType())
+			.careerType(dto.getCareerType())
 			.registerDate(dto.getRegisterDate())
 			.endDate(dto.getEndDate())
 			.build();
