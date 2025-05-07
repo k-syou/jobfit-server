@@ -1,8 +1,6 @@
 package com.jobfit.server.service.recruit;
 
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -33,7 +31,7 @@ public class RecruitService {
 
 	private final RecruitRepository recruitRepository;
 	private final RecruitJpaRepository recruitJpaRepository;
-	private final RecruitSupport recruitSuppot;
+	private final RecruitSupport recruitSupport;
 
 	@Transactional
 	public RecruitDetailInfo getRecruit(Long recruitId) {
@@ -75,115 +73,114 @@ public class RecruitService {
 	private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
 	@Transactional // 데이터를 저장하므로 Transactional 추가
-	public int saveTestDataFromApi(int start, int end) {
-		int savedCount = 0;
+	public int schedulerRecruit() {
+		int savedTotal = 0;
 		try {
-			// 1. 외부 API 호출
-			JSONObject responseJson = recruitSuppot.getJobInfo(start, end);
+			// 1. 처음 요청해서 전체 개수 확인
+			JSONObject firstResponse = recruitSupport.getJobInfo(1, 1);
+			JSONObject getJobInfo = firstResponse.getJSONObject("GetJobInfo");
+			int totalCount = getJobInfo.getInt("list_total_count");
 
-			// 2. JSON 파싱 및 Recruit 엔티티 생성
-			// 실제 API 응답 구조에 따라 키("GetJobInfo", "row")를 조정해야 합니다.
-			if (responseJson.has("GetJobInfo")) {
-				JSONObject getJobInfo = responseJson.getJSONObject("GetJobInfo");
-				if (getJobInfo.has("row")) {
-					JSONArray jobArray = getJobInfo.getJSONArray("row");
-					List<Recruit> recruitsToSave = new ArrayList<>();
+			int pageSize = 1000;
 
-					for (int i = 0; i < jobArray.length(); i++) {
-						JSONObject item = jobArray.getJSONObject(i);
-						// JSON 필드명은 API 명세에 따라 정확히 지정해야 합니다. (예시 필드명 사용)
-						String category = item.optString("JOBCODE_NM"); // 직무 분야
-						String companyName = item.optString("CMPNY_NM"); // 기업 명칭
-						String summary = item.optString("BSNS_SUMRY_CN", ""); // 사업 요약 내용
-						String recruitNumber = item.optString("RCRIT_NMPR_CO", ""); // 모집 인원
-						String educationType = item.optString("ACDMCR_NM", ""); // 학력코드 명
-						String jobType = item.optString("EMPLYM_STLE_CMMN_MM", ""); // 고용형태코드명
-						String workPlace = item.optString("WORK_PARAR_BASS_ADRES", ""); // 근무지
-						String content = item.optString("DTY_CN", ""); // 직무 내용
-						String careerType = item.optString("CAREER_CND_NM", ""); // 경력조건코드명
-						String wage = item.optString("HOPE_WAGE", ""); // 급여 조건
-						String workTime = item.optString("WORK_TIME_NM", ""); // 근무 시간
-						String workType = item.optString("WORK_TM_NM", ""); // 근무 형태
-						String workSchedule = item.optString("HOLIDAY_NM", ""); // 주 근무 일수
-						String totalTime = item.optString("WEEK_WORK_HR", ""); // 주당 근무 시간
-						String insurance = item.optString("JO_FEINSR_SBSCRB_NM", ""); // 4대 보험
-						String recruitmentMethod = item.optString("MODEL_MTH_NM", ""); // 전형 방법
-						String applyMethod = item.optString("RCEPT_MTH_NM", ""); // 접수 방법
-						String applyDocument = item.optString("PRESENTN_PAPERS_NM", ""); // 제출 서류
-						String manager = item.optString("MNGR_NM", ""); // 담당자 이름
-						String managerPhonenumber = item.optString("MNGR_PHON_NO", ""); // 담당자 전화번호
-						String managerOrganization = item.optString("MNGR_INSTT_NM", ""); // 담당자 소속기관 명
-						String companyAddress = item.optString("BASS_ADRES_CN", ""); // 기업 주소
-						String title = item.optString("JO_SJ", ""); // 공고제목
-						String jobPosting = item.optString("GUI_LN", ""); // 모집 요강
-						String regDateStr = item.optString("JO_REG_DT", ""); // 등록일 문자열
-						String endDateStr = item.optString("RCEPT_CLOS_NM", "").replaceAll("[^0-9-]", "").trim(); // 마감일 문자열에서 날짜만
-																																																			// 추출
+			// 2. 1000개 단위로 반복 요청
+			for (int start = 1; start <= totalCount; start += pageSize) {
+				int end = Math.min(start + pageSize - 1, totalCount);
+				JSONObject response = recruitSupport.getJobInfo(start, end);
+				List<Recruit> recruits = parseRecruitsFromApi(response);
 
-						LocalDate registerDate = null;
-						LocalDate endDate = null;
-
-						// 날짜 파싱 (오류 발생 시 null 처리 또는 로그 기록)
-						if (regDateStr != null && !regDateStr.isEmpty()) {
-							registerDate = parseDate(regDateStr);
-						}
-						if (endDateStr != null && !endDateStr.isEmpty()) {
-							endDate = parseDate(endDateStr);
-						}
-
-						// Recruit 엔티티 생성 (API에 없는 필드는 null 또는 기본값으로 채움)
-						// Recruit 생성자 파라미터 순서 및 타입 확인 필요
-						Recruit recruit = new Recruit(
-								category,
-								companyName,
-								summary,
-								recruitNumber,
-								educationType,
-								jobType,
-								workPlace,
-								content,
-								careerType,
-								wage,
-								workTime,
-								workType,
-								workSchedule,
-								totalTime,
-								insurance,
-								recruitmentMethod,
-								applyMethod,
-								applyDocument,
-								manager,
-								managerPhonenumber,
-								managerOrganization,
-								companyAddress,
-								title,
-								jobPosting,
-								registerDate,
-								endDate);
-						recruitsToSave.add(recruit);
-					}
-
-					// 4. DB에 저장
-					if (!recruitsToSave.isEmpty()) {
-						recruitJpaRepository.saveAll(recruitsToSave);
-						savedCount = recruitsToSave.size();
-						log.info("Successfully saved {} recruits from API.", savedCount);
-					} else {
-						log.info("No valid recruit data found in the API response to save.");
-					}
+				if (!recruits.isEmpty()) {
+					recruitJpaRepository.saveAll(recruits);
+					savedTotal += recruits.size();
+					log.info("Saved {} recruits ({} ~ {})", recruits.size(), start, end);
 				} else {
-					log.warn("API response does not contain 'row' field within 'GetJobInfo'.");
+					log.warn("No recruits to save for page {} ~ {}", start, end);
 				}
-			} else {
-				log.warn("API response does not contain 'GetJobInfo' field.");
 			}
+
 		} catch (Exception e) {
-			// API 호출 실패, JSON 파싱 오류, DB 저장 오류 등 처리
-			log.error("Error saving test data from API: {}", e.getMessage(), e);
-			// 필요에 따라 예외를 다시 던지거나 다른 방식으로 처리
-			// throw new RuntimeException("Failed to save test data from API.", e);
+			log.error("Error saving recruit data from API: {}", e.getMessage(), e);
 		}
-		return savedCount;
+
+		return savedTotal;
+	}
+
+	private List<Recruit> parseRecruitsFromApi(JSONObject responseJson) {
+		List<Recruit> recruitsToSave = new ArrayList<>();
+
+		if (!responseJson.has("GetJobInfo")) return recruitsToSave;
+
+		JSONObject getJobInfo = responseJson.getJSONObject("GetJobInfo");
+		if (!getJobInfo.has("row")) return recruitsToSave;
+
+		JSONArray jobArray = getJobInfo.getJSONArray("row");
+
+		for (int i = 0; i < jobArray.length(); i++) {
+			JSONObject item = jobArray.getJSONObject(i);
+
+			String category = item.optString("JOBCODE_NM", "");
+			String companyName = item.optString("CMPNY_NM", "");
+			String summary = item.optString("BSNS_SUMRY_CN", "");
+			String recruitNumber = item.optString("RCRIT_NMPR_CO", "");
+			String educationType = item.optString("ACDMCR_NM", "");
+			String jobType = item.optString("EMPLYM_STLE_CMMN_MM", "");
+			String workPlace = item.optString("WORK_PARAR_BASS_ADRES", "");
+			String content = item.optString("DTY_CN", "");
+			String careerType = item.optString("CAREER_CND_NM", "");
+			String wage = item.optString("HOPE_WAGE", "");
+			String workTime = item.optString("WORK_TIME_NM", "");
+			String workType = item.optString("WORK_TM_NM", "");
+			String workSchedule = item.optString("HOLIDAY_NM", "");
+			String totalTime = item.optString("WEEK_WORK_HR", "");
+			String insurance = item.optString("JO_FEINSR_SBSCRB_NM", "");
+			String recruitmentMethod = item.optString("MODEL_MTH_NM", "");
+			String applyMethod = item.optString("RCEPT_MTH_NM", "");
+			String applyDocument = item.optString("PRESENTN_PAPERS_NM", "");
+			String manager = item.optString("MNGR_NM", "");
+			String managerPhonenumber = item.optString("MNGR_PHON_NO", "");
+			String managerOrganization = item.optString("MNGR_INSTT_NM", "");
+			String companyAddress = item.optString("BASS_ADRES_CN", "");
+			String title = item.optString("JO_SJ", "");
+			String jobPosting = item.optString("GUI_LN", "");
+			String regDateStr = item.optString("JO_REG_DT", "");
+			String endDateStr = item.optString("RCEPT_CLOS_NM", "").replaceAll("[^0-9-]", "").trim();
+
+			LocalDate registerDate = parseDate(regDateStr);
+			LocalDate endDate = parseDate(endDateStr);
+
+			Recruit recruit = new Recruit(
+				category,
+				companyName,
+				summary,
+				recruitNumber,
+				educationType,
+				jobType,
+				workPlace,
+				content,
+				careerType,
+				wage,
+				workTime,
+				workType,
+				workSchedule,
+				totalTime,
+				insurance,
+				recruitmentMethod,
+				applyMethod,
+				applyDocument,
+				manager,
+				managerPhonenumber,
+				managerOrganization,
+				companyAddress,
+				title,
+				jobPosting,
+				registerDate,
+				endDate
+			);
+
+			recruitsToSave.add(recruit);
+		}
+
+		return recruitsToSave;
 	}
 
 	// 날짜 문자열 파싱 헬퍼 메소드

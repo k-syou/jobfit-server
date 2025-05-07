@@ -4,28 +4,32 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 import org.json.JSONObject;
 import org.springframework.stereotype.Component;
 
 @Component
 public class RecruitSupport {
-  String API_KEY = "64595357567470703935734c417748";
-  String API_URL = "http://openapi.seoul.go.kr:8088/";
+    String API_KEY = "64595357567470703935734c417748";
+    String API_URL = "http://openapi.seoul.go.kr:8088/";
 
-  public JSONObject getJobInfo(int start, int end) throws Exception {
-    String apiUrl = API_URL + API_KEY + "/json/GetJobInfo/" + String.valueOf(start) + "/" + String.valueOf(end);
-    URL url = new URL(apiUrl);
-    HttpURLConnection con = (HttpURLConnection) url.openConnection();
-    con.setRequestMethod("GET");
-    BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
-    String inputLine;
-    StringBuffer content = new StringBuffer();
-    while ((inputLine = br.readLine()) != null) {
-      content.append(inputLine);
+    public JSONObject getJobInfo(int start, int end) throws Exception {
+        String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        String apiUrl = API_URL + API_KEY + "/json/GetJobInfo/"+ start + "/" + end + "/%20/%20/%20/%20/" + today;
+        URL url = new URL(apiUrl);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("GET");
+        BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer content = new StringBuffer();
+        while ((inputLine = br.readLine()) != null) {
+          content.append(inputLine);
+        }
+        br.close();
+        con.disconnect();
+        JSONObject json = new JSONObject(content.toString());
+        return json;
     }
-    br.close();
-    con.disconnect();
-    JSONObject json = new JSONObject(content.toString());
-    return json;
-  }
 }

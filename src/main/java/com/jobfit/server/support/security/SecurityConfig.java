@@ -86,9 +86,10 @@ public class SecurityConfig {
                     "/api/v1/otp/check",
                     "/api/v1/user/login",
                     "/api/v1/user/signup",
-                    "/api/v1/user/check/username",
                     "/api/v1/user/find-username",
                     "/api/v1/user/find-password",
+                    "/api/v1/user/check/username",
+                    "api/v1/recruit/testDataInput",
                     "/css/**").permitAll()
                 .anyRequest().authenticated()
             );

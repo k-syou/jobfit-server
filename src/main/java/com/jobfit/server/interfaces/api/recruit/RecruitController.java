@@ -63,7 +63,7 @@ public class RecruitController {
 			@RequestParam(defaultValue = "1") int start,
 			@RequestParam(defaultValue = "10") int end) {
 		try {
-			int savedCount = recruitService.saveTestDataFromApi(start, end);
+			int savedCount = recruitService.schedulerRecruit();
 			String message = "Successfully saved " + savedCount + " recruits.";
 			return ApiResponse.OK(message);
 		} catch (Exception e) {
