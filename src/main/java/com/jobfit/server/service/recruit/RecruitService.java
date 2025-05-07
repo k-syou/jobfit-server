@@ -6,10 +6,6 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import org.json.JSONArray;
@@ -40,33 +36,17 @@ public class RecruitService {
 	}
 
 	@Transactional(readOnly = true)
-	public Page<RecruitInfo> searchRecruits(
-			Integer page,
-			String sortType,
-			Integer size,
-			String companyName,
-			String region,
-			String job,
-			String careerType) {
-		Sort sort;
-		if ("마감일순".equals(sortType)) {
-			sort = Sort.by(Sort.Direction.ASC, "endDate");
-		} else {
-			sort = Sort.by(Sort.Direction.DESC, "registerDate");
-		}
-
-		int pageNumber = (page != null && page >= 0) ? page : 0;
-		int pageSize = (size != null && size > 0) ? size : 10;
-		Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
-
-		Page<Recruit> recruitPage = recruitJpaRepository.findRecruits(
-				companyName,
-				region,
-				job,
-				careerType,
-				pageable);
-
-		return recruitPage.map(RecruitInfo::from);
+	public List<RecruitInfo> searchRecruits(SearchRecruitCommand command) {
+		return recruitRepository.findRecruitsWithFavoriteStatus(
+			command.getUserId(),
+			command.getCompanyName(),
+			command.getRegion(),
+			command.getJob(),
+			command.getCareerType(),
+			command.getPageable()).getContent()
+			.stream()
+			.map(RecruitInfo::from)
+			.toList();
 	}
 
 	private static final Logger log = LoggerFactory.getLogger(RecruitService.class);

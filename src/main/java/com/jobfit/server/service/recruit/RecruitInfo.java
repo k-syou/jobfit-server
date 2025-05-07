@@ -1,6 +1,7 @@
 package com.jobfit.server.service.recruit;
 
-import com.jobfit.server.domain.recruit.Recruit;
+import com.jobfit.server.infras.recruit.RecruitWithFavoriteDto;
+
 import java.time.LocalDate;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,6 +18,7 @@ public class RecruitInfo {
   private String careerType; // 경력
   private LocalDate registerDate; // 등록일
   private LocalDate endDate; // 마감일
+  private boolean favorite;
 
   @Builder
   private RecruitInfo(
@@ -28,7 +30,8 @@ public class RecruitInfo {
       String workPlace,
       String careerType,
       LocalDate registerDate,
-      LocalDate endDate) {
+      LocalDate endDate,
+      boolean favorite) {
     this.recruitId = recruitId;
     this.title = title;
     this.companyName = companyName;
@@ -38,11 +41,12 @@ public class RecruitInfo {
     this.careerType = careerType;
     this.registerDate = registerDate;
     this.endDate = endDate;
+    this.favorite = favorite;
   }
 
-  public static RecruitInfo from(Recruit recruit) {
+  public static RecruitInfo from(RecruitWithFavoriteDto recruit) {
     return RecruitInfo.builder()
-        .recruitId(recruit.getId())
+        .recruitId(recruit.getRecruitId())
         .title(recruit.getTitle())
         .companyName(recruit.getCompanyName())
         .wage(recruit.getWage())
@@ -51,6 +55,7 @@ public class RecruitInfo {
         .careerType(recruit.getCareerType())
         .registerDate(recruit.getRegisterDate())
         .endDate(recruit.getEndDate())
+        .favorite(recruit.isFavorite())
         .build();
   }
 }
