@@ -15,7 +15,7 @@ public interface FavoriteJpaRepository extends JpaRepository<Favorite, Long> {
 
 	@Query("""
 		SELECT new com.jobfit.server.infras.favorite.FavoriteRecruitDto(
-		f.userId, f.recruitId, r.title, r.companyName, r.wage, r.workPlace, r.jobType, r.registerDate, r.endDate
+		f.userId, f.recruitId, r.title, r.companyName, r.wage, r.workPlace, r.jobType, r.careerType, r.registerDate, r.endDate
 		)
 		FROM Favorite f
 		JOIN Recruit r ON f.recruitId = r.id
